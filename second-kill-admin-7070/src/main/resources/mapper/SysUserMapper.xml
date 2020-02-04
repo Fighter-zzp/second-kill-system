@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzp.second.kill.admin.mapper.SysUserMapper">
+    <resultMap id="BaseResultMap" type="com.zzp.second.kill.admin.domain.SysUser">
+        <!--@mbg.generated generated on Tue Jan 21 23:18:46 CST 2020.-->
+        <!--@Table sys_user-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="key" jdbcType="VARCHAR" property="key"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Tue Jan 21 23:18:46 CST 2020.-->
+        id, username, `password`, `key`
+    </sql>
+
+    <select resultType="java.util.Map" id="getSysUserInfo">
+        SELECT su.username, su.password, smp.name, smp.icon, smp.url, smp.id, smp.pid, smp.component, sop.operater
+        FROM sys_user su JOIN sys_user_role sur ON su.id = sur.user_id
+        JOIN sys_role sr ON sr.id = sur.role_id
+        JOIN sys_role_menu_permission srmp ON srmp.role_id = sr.id
+        JOIN sys_menus_permission smp ON smp.id = srmp.menu_id
+        JOIN sys_role_operator_permission srop ON srop.role_id = sr.id
+        LEFT JOIN sys_operator_permission sop ON sop.id = srop.operator_id AND sop.menu_permission_id = smp.id
+        WHERE su.username = #{username};
+  </select>
+
+</mapper>

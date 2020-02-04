@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzp.second.kill.admin.mapper.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.zzp.second.kill.admin.domain.Company">
+    <!--@mbg.generated generated on Thu Jan 23 19:35:43 CST 2020.-->
+    <!--@Table company-->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parentId" jdbcType="INTEGER" property="parentid" />
+  </resultMap>
+</mapper>

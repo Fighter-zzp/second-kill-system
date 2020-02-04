@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "com.zzp.second.kill.admin.grpc.domain";
+
+option java_outer_classname = "GrpcMessage";
+
+option java_multiple_files = true;
+
+message SysUserTokenInfo {
+    string username = 1;
+    string passwrod = 2;
+    repeated string authorities = 3;
+}
