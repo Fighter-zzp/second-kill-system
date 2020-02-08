@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.zzp</groupId>
-        <artifactId>second-kill-system</artifactId>
+        <artifactId>second-kill-commons</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>second-kill-commons</artifactId>
+    <artifactId>commons-tkmapper</artifactId>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <url>https://www.zzp.com</url>
 
     <!--指定开源协议-->
@@ -30,13 +30,15 @@
     </developers>
 
     <dependencies>
+        <!--tk.mybatis-->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+        </dependency>
+        <!--pagehelper-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
-    <modules>
-        <module>commons-secret</module>
-        <module>commons-tkmapper</module>
-    </modules>
 </project>

@@ -2,6 +2,8 @@ package com.zzp.second.kill.admin.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zzp.second.kill.admin.domain.User;
 import com.zzp.second.kill.admin.service.UserService;
 import org.slf4j.Logger;
@@ -12,11 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -64,8 +68,11 @@ public class UserInfoController {
      */
     @PreAuthorize("hasAuthority('userInfo:edit')")
     @PutMapping
-    public Object edit(User user){
-        return "edit " + user;
+    public Object edit(@RequestBody User user){
+        var map = Maps.newHashMap();
+        var code = userService.edit(user);
+        map.put("code", code);
+        return map;
     }
 
 
@@ -76,8 +83,11 @@ public class UserInfoController {
      */
     @PreAuthorize("hasAuthority('userInfo:add')")
     @PostMapping
-    public Object add(User user) {
-        return "add " + user;
+    public Object add(@RequestBody User user) {
+        var map = Maps.newHashMap();
+        var code = userService.save(user);
+        map.put("code", code);
+        return map;
     }
 
     /**
@@ -86,8 +96,11 @@ public class UserInfoController {
      */
     @PreAuthorize("hasAuthority('userInfo:delete')")
     @DeleteMapping(value="/{id}")
-    public Object delete(@PathVariable String id) {
-        return "delete " + id;
+    public Object delete(@PathVariable Integer id) {
+        var code = userService.delete(id);
+        var map = Maps.newHashMap();
+        map.put("code", code);
+        return map;
     }
 
     /**
@@ -108,5 +121,10 @@ public class UserInfoController {
     @PostMapping(value="/import")
     public Object importData() {
         return "import";
+    }
+
+    @GetMapping("/{id}")
+    public User findById(@PathVariable("id")Integer id){
+        return userService.findById(id);
     }
 }

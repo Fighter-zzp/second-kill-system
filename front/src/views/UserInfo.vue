@@ -4,7 +4,7 @@
             <el-breadcrumb-item>管理系统</el-breadcrumb-item>
             <el-breadcrumb-item>用户列表</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button @click="showAddDialog" type="primary" v-has-permission:userInfo:add size="mini">添加</el-button>
+        <el-button @click="showAddDialog('')" type="primary" v-has-permission:userInfo:add size="mini">添加</el-button>
         <el-button type="primary" v-has-permission:userInfo:export size="mini">导出</el-button>
         <el-button type="primary" v-has-permission:userInfo:import size="mini">导入</el-button>
         <el-table
@@ -44,7 +44,9 @@
             <el-table-column
                     label="操作">
                 <template slot-scope="scope">
-                    <el-button type="success" v-has-permission:userInfo:edit size="mini"><i class="el-icon-edit"></i> 编辑
+                    <el-button type="success" v-has-permission:userInfo:edit size="mini"
+                               @click="showAddDialog(scope.row.id)">
+                        <i class="el-icon-edit"></i> 编辑
                     </el-button>
                     <el-button type="danger" v-has-permission:userInfo:delete
                                @click="delUser(scope.row.id, scope.row.name)" size="mini"><i class="el-icon-delete"></i>
@@ -88,7 +90,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="showAddUserDialog = false">取 消</el-button>
-                <el-button @click="addUser" type="primary">确 定</el-button>
+                <el-button @click="changeUser(userModel.id)" type="primary">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -109,6 +111,7 @@
                 showAddUserDialog: false,
                 companys: [],
                 userModel: {
+                    id: '',
                     name: '',
                     email: '',
                     gender: '',
@@ -136,7 +139,7 @@
         methods: {
             // row指一行的数据, cellValue指的是格子的数据
             formatGender(row, column, cellValue) {
-                return cellValue == 'F' ? '女' : '男';
+                return cellValue === 'F' ? '女' : '男';
             },
             formatBirthday(row, column, cellValue) {
                 return moment(cellValue).format('YYYY-MM-DD');
@@ -144,6 +147,7 @@
             formatCreatetime(row, column, cellValue) {
                 return moment(cellValue).format('YYYY-MM-DD HH:mm:ss');
             },
+            // 页面显示
             toPage(val) {
                 //window.console.log(val);
                 this.axios.get('/userInfo?page=' + val + "&size=10", {
@@ -159,13 +163,14 @@
                         // window.console.log(this.users);
                     })
             },
+            // 删除数据
             delUser(id, name) {
                 this.$confirm('是否删除【' + name + '】的数据?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {  //当用户点击确认后执行的逻辑
-                    this.axios.delete("/user/" + id, {
+                    this.axios.delete("/userInfo/" + id, {
                         headers: {
                             "Authorization": "Bearer " + VueCookies.get('token')
                         }
@@ -183,7 +188,20 @@
                         });
                 });
             },
-            showAddDialog() {
+            showAddDialog(id) {
+                this.userModel.id = id;
+                if (id != null && id !== '') {
+                    this.axios.get("/userInfo/" + id,
+                        {
+                            headers: {
+                                "Authorization": "Bearer " + VueCookies.get('token')
+                            }
+                        }).then(resp => {
+                        this.userModel = resp.data;
+                    });
+                } else if (this.userModel.name !== '') {
+                    this.$refs['userModel'].resetFields()
+                }
                 this.axios.get("/company", {
                     headers: {
                         "Authorization": "Bearer " + VueCookies.get('token')
@@ -194,26 +212,57 @@
                         this.showAddUserDialog = true;
                     })
             },
-            // 添加数据
-            addUser() {
-                // valid的值就是true或者false
+
+            // 更改user
+            changeUser(id) {
                 this.$refs.userModel.validate(valid => {
                     if (valid) {
-                        this.axios.post('/userInfo', this.userModel)
-                            .then(resp => {
-                                let code = resp.data.code;
-                                if (code > 0) {
-                                    this.showAddUserDialog = false;
-                                    this.toPage(this.currentPage); //重新加载当前页的数据
-                                } else {
-                                    this.$notify({
-                                        title: '提示',
-                                        message: '添加失败，请联系管理员'
-                                    });
-                                }
-                            })
+                        if (id != null && id !== '') {
+                            this.updateUser();
+                        } else {
+                            this.addUser();
+                        }
                     }
                 })
+            },
+            updateUser() {
+                this.axios.put('/userInfo', this.userModel, {
+                    headers: {
+                        "Authorization": "Bearer " + VueCookies.get('token')
+                    }
+                })
+                    .then(resp => {
+                        let code = resp.data.code;
+                        if (code > 0) {
+                            this.showAddUserDialog = false;
+                            this.toPage(this.currentPage); //重新加载当前页的数据
+                        } else {
+                            this.$notify({
+                                title: '提示',
+                                message: '修改失败，请联系管理员'
+                            });
+                        }
+                    })
+            },
+            // 添加数据
+            addUser() {
+                this.axios.post('/userInfo', this.userModel, {
+                    headers: {
+                        "Authorization": "Bearer " + VueCookies.get('token')
+                    }
+                })
+                    .then(resp => {
+                        let code = resp.data.code;
+                        if (code > 0) {
+                            this.showAddUserDialog = false;
+                            this.toPage(this.currentPage); //重新加载当前页的数据
+                        } else {
+                            this.$notify({
+                                title: '提示',
+                                message: '添加失败，请联系管理员'
+                            });
+                        }
+                    })
             }
         }
     }

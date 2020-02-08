@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.zzp</groupId>
-        <artifactId>second-kill-system</artifactId>
+        <artifactId>second-kill-commons</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>second-kill-commons</artifactId>
+    <artifactId>commons-secret</artifactId>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <url>https://www.zzp.com</url>
 
     <!--指定开源协议-->
@@ -31,12 +31,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-    <modules>
-        <module>commons-secret</module>
-        <module>commons-tkmapper</module>
-    </modules>
 </project>

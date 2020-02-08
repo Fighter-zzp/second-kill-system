@@ -102,10 +102,14 @@
         <!--project-->
         <dependency>
             <groupId>com.zzp</groupId>
-            <artifactId>second-kill-commons</artifactId>
+            <artifactId>commons-secret</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.zzp</groupId>
+            <artifactId>commons-tkmapper</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -21,4 +21,31 @@ public interface UserService{
      */
     List<User> selectPageData();
 
+    /**
+     * 更加id删除用户
+     * @param id 用户id
+     * @return 删除后的返回值
+     */
+    Integer delete(Integer id);
+
+    /**
+     * 保存添加用户
+     * @param user 用户
+     * @return 添加后的返回条数
+     */
+    Integer save(User user);
+
+    /**
+     * 根据id查询用户
+     * @param id 用户id
+     * @return 用户
+     */
+    User findById(Integer id);
+
+    /**
+     * 编辑用户
+     * @param user 更新的数据
+     * @return 编辑后的返回条数
+     */
+    Integer edit(User user);
 }
