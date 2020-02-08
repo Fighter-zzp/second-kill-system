@@ -13,9 +13,20 @@
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="company_id" jdbcType="INTEGER" property="companyId" />
+
+    <association property="company" javaType="com.zzp.second.kill.admin.domain.Company">
+<!--      <result column="cid" jdbcType="INTEGER" property="id" />-->
+      <result column="cname" jdbcType="VARCHAR" property="name" />
+<!--      <result column="parentId" jdbcType="INTEGER" property="parentid" />-->
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated generated on Wed Jan 15 13:58:27 CST 2020.-->
     id, `name`, `password`, gender, email, birthday, createTime, updateTime, company_id
   </sql>
+
+  <select id="selectUsers" resultMap="BaseResultMap">
+    select u.id, u.`name`, u.gender, u.email, u.createTime, u.birthday,c.name cname
+    from user u left join company c on u.company_id = c.id
+  </select>
 </mapper>

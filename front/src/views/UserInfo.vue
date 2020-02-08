@@ -5,8 +5,8 @@
             <el-breadcrumb-item>用户列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-button @click="showAddDialog('')" type="primary" v-has-permission:userInfo:add size="mini">添加</el-button>
-        <el-button type="primary" v-has-permission:userInfo:export size="mini">导出</el-button>
-        <el-button type="primary" v-has-permission:userInfo:import size="mini">导入</el-button>
+        <el-button @click="download" type="primary" v-has-permission:userInfo:export size="mini">导出</el-button>
+        <el-button type="primary" v-has-permission:userInfo:import size="mini">导入<i class="el-icon-upload el-icon--right"></i></el-button>
         <el-table
                 :data="users"
                 border
@@ -100,6 +100,7 @@
     // 添加模块
     import VueCookies from 'vue-cookies'
     import moment from 'moment'
+    import fileDownload from 'js-file-download';
 
     export default {
         name: "UserInfo",
@@ -162,6 +163,33 @@
                         this.currentPage = resp.data.pageNum;
                         // window.console.log(this.users);
                     })
+            },
+            // 下载数据
+            download() {
+                this.$confirm('是否下载用户数据?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {  //当用户点击确认后执行的逻辑
+                    this.axios.get("/userInfo/export", {
+                        headers: {
+                            "Authorization": "Bearer " + VueCookies.get('token')
+                        },
+                        responseType: 'arraybuffer'
+                    })
+                        .then(resp => {
+                            fileDownload(resp.data,'用户报表.xlsx');
+                            let code = resp.data.code;
+                            if (code !== -1) {
+                                this.toPage(this.currentPage); //重新加载当前页的数据
+                            } else {
+                                this.$notify({
+                                    title: '提示',
+                                    message: resp.data.msg+'，请联系管理员'
+                                });
+                            }
+                        });
+                });
             },
             // 删除数据
             delUser(id, name) {

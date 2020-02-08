@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Table(name = "company")
 public class Company implements Serializable {
+    private static final long serialVersionUID = 7225342001715852575L;
     @Column(name = "id")
     private Integer id;
 
@@ -15,6 +16,4 @@ public class Company implements Serializable {
 
     @Column(name = "parentId")
     private Integer parentid;
-
-    private static final long serialVersionUID = 1L;
 }

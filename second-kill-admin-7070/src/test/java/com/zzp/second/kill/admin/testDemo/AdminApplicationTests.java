@@ -1,6 +1,7 @@
 package com.zzp.second.kill.admin.testDemo;
 
 import com.zzp.second.kill.admin.mapper.SysUserMapper;
+import com.zzp.second.kill.admin.mapper.UserMapper;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,5 +32,12 @@ public class AdminApplicationTests {
     @Test
     void test3(){
         sysUserMapper.getSysUserInfo("zzp").forEach(System.out::println);
+    }
+
+    @Resource
+    private UserMapper userMapper;
+    @Test
+    void test11(){
+        userMapper.selectUsers().forEach(System.out::println);
     }
 }

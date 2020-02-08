@@ -99,6 +99,7 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+
         <!--project-->
         <dependency>
             <groupId>com.zzp</groupId>
@@ -108,6 +109,11 @@
         <dependency>
             <groupId>com.zzp</groupId>
             <artifactId>commons-tkmapper</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zzp</groupId>
+            <artifactId>commons-excel</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

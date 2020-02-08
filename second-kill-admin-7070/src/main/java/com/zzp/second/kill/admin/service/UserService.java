@@ -2,6 +2,8 @@ package com.zzp.second.kill.admin.service;
 
 import com.zzp.second.kill.admin.domain.User;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -48,4 +50,10 @@ public interface UserService{
      * @return 编辑后的返回条数
      */
     Integer edit(User user);
+
+    /**
+     * 导出Excel
+     * @param resp .
+     */
+    void export(HttpServletResponse resp) throws IOException;
 }

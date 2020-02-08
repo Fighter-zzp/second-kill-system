@@ -2,13 +2,13 @@ package com.zzp.second.kill.admin.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zzp.second.kill.admin.domain.User;
 import com.zzp.second.kill.admin.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -45,6 +46,8 @@ public class UserInfoController {
      */
     @Resource
     private UserService userService;
+
+
 
     /**
      * 分页信息类
@@ -104,13 +107,12 @@ public class UserInfoController {
     }
 
     /**
-     * 导出
-     * @return .
+     * 导出 Excel文件
      */
     @PreAuthorize("hasAuthority('userInfo:export')")
     @GetMapping(value="/export")
-    public Object export() {
-        return "export";
+    public void export(HttpServletResponse resp) throws IOException {
+         userService.export(resp);
     }
 
     /**

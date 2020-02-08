@@ -38,5 +38,6 @@
     <modules>
         <module>commons-secret</module>
         <module>commons-tkmapper</module>
+        <module>commons-excel</module>
     </modules>
 </project>
